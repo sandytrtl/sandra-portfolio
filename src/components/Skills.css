@@ -1,0 +1,124 @@
+.skills {
+  padding: 120px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--px);
+}
+
+.skills-header { margin-bottom: 32px; }
+
+.skills-heading {
+  font-size: clamp(36px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+.skills-heading .accent { color: var(--primary); }
+
+.skills-hint {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.hint-icon {
+  font-size: 1rem;
+  color: var(--primary);
+  animation: spin-hint 3s ease-in-out infinite;
+  display: inline-block;
+}
+@keyframes spin-hint {
+  0%, 100% { transform: rotate(0deg); }
+  50%       { transform: rotate(180deg); }
+}
+
+/* ── 3D Canvas ── */
+.table-scene {
+  width: 100%;
+  height: 480px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: transparent;
+  cursor: grab;
+  position: relative;
+  margin-bottom: 36px;
+}
+.table-scene:active { cursor: grabbing; }
+
+.three-canvas {
+  width: 100%;
+  height: 100%;
+}
+.three-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ── Legend pills below table ── */
+.skills-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.legend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px 6px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: border-color var(--t-fast), color var(--t-fast),
+              transform var(--t-fast), box-shadow var(--t-fast);
+  cursor: default;
+}
+.legend-pill:hover,
+.legend-pill--active {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+  background: color-mix(in srgb, var(--primary) 8%, var(--bg-card));
+}
+
+.legend-logo {
+  width: 18px; height: 18px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+[data-theme="dark"] .legend-logo[alt="GitHub"],
+[data-theme="dark"] .legend-logo[alt="Express"] {
+  filter: invert(1);
+}
+.legend-icon {
+  font-size: 0.75rem;
+  color: var(--primary);
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 860px) {
+  .skills { padding: 96px 0 60px; }
+  .table-scene { height: 360px; }
+}
+@media (max-width: 480px) {
+  .skills-heading { font-size: 34px; }
+  .table-scene { height: 280px; }
+  .legend-pill { font-size: 0.74rem; padding: 5px 11px 5px 8px; }
+}
