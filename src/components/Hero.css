@@ -1,7 +1,7 @@
-/* Light mode grid */
+/* grid bg */
 @keyframes bg-scrolling {
   0%   { background-position: 50px 50px; }
-  100% { background-position: 0px 0px; }
+  100% { background-position: 0 0; }
 }
 
 .hero {
@@ -10,8 +10,7 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
-
-  /* Animated grid — light mode */
+  overflow: hidden;
   background-color: var(--bg);
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
@@ -20,11 +19,9 @@
   animation: bg-scrolling 3s linear infinite;
   --grid-line: rgba(156, 119, 92, 0.10);
 }
+[data-theme="dark"] .hero { --grid-line: rgba(196, 168, 130, 0.07); }
 
-[data-theme="dark"] .hero {
-  --grid-line: rgba(196, 168, 130, 0.07);
-}
-
+/* layout */
 .hero-layout {
   max-width: var(--max-w);
   width: 100%;
@@ -37,11 +34,125 @@
   z-index: 1;
 }
 
-/* ── CHARACTER ── */
+/* =====================================================
+   GREETING — the heart of the intro
+   Phase "greet":   small, centered in viewport, static
+   Phase "expand":  grows to large display size, slides up
+   Phase "content"+ settles into its final spot in hero-text
+===================================================== */
+
+/* In "greet" phase: greeting is pinned to center of viewport */
+.hero--greet .hero-greeting {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  opacity: 1;
+  z-index: 20;
+  margin: 0;
+  white-space: nowrap;
+  transition: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+}
+
+/* In "expand" phase: grows to big display text, starts moving up */
+.hero--expand .hero-greeting {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* grow large, begin floating up */
+  transform: translate(-50%, calc(-50% - 60px));
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-family: var(--font-display);
+  opacity: 1;
+  z-index: 20;
+  margin: 0;
+  white-space: nowrap;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  transition:
+    font-size 2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  10s cubic-bezier(0.16, 1, 0.3, 1),
+    color      10s ease;
+}
+
+/* In "content"+ phases: snaps back to its natural place in the flow */
+.hero--content .hero-greeting,
+.hero--face    .hero-greeting {
+  position: static;
+  transform: none;
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  opacity: 1;
+  margin-bottom: 14px;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  /* instant snap — no transition — so it just appears in place */
+  transition: none;
+  white-space: normal;
+}
+
+/* =====================================================
+   HEADLINE
+===================================================== */
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.2vw, 54px);
+  line-height: 1.18;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 40px;
+
+  /* hidden until "content" phase */
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 3s var(--ease), transform 3s var(--ease);
+}
+.hero--content .hero-headline,
+.hero--face    .hero-headline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.highlight { color: var(--primary); display: inline; }
+
+/* =====================================================
+   ACTIONS
+===================================================== */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s var(--ease) 0.18s, transform 0.55s var(--ease) 0.18s;
+}
+.hero--content .hero-actions,
+.hero--face    .hero-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================================
+   FACE — slides in from left after content
+===================================================== */
 .hero-face {
   flex-shrink: 0;
   position: relative;
   width: 230px;
+
+  opacity: 0;
+  transform: translateX(-48px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+}
+.hero--face .hero-face {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .face-wrap {
@@ -51,55 +162,39 @@
   animation: float 5s ease-in-out infinite;
   will-change: transform;
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-10px); }
 }
 
 .face-base {
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  -webkit-user-drag: none;
+  width: 100%; height: 100%;
+  user-select: none; -webkit-user-drag: none;
   transition: filter .5s ease;
 }
-
 [data-theme="dark"] .face-base {
   filter: invert(1) hue-rotate(180deg) brightness(0.88);
 }
 
-.eyes-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
+/* eyes — always light-mode */
+.eyes-overlay { position: absolute; inset: 0; pointer-events: none; }
 
 .eye-socket {
   position: absolute;
-  width: 38px;
-  height: 33px;
+  width: 38px; height: 33px;
   border-radius: 50%;
-  background: white;
+  background: white !important;
   overflow: hidden;
 }
-/* Left eye */
-.eye-socket:nth-child(1) {
-  left: calc(30% - 19px);
-  top:  calc(32% - 16.5px);
-}
-/* Right eye */
-.eye-socket:nth-child(2) {
-  left: calc(62% - 19px);
-  top:  calc(30% - 16.5px);
-}
+.eye-socket:nth-child(1) { left: calc(39% - 19px); top: calc(38% - 16.5px); }
+.eye-socket:nth-child(2) { left: calc(59% - 19px); top: calc(38% - 16.5px); }
 
 .pupil {
   position: absolute;
   top: 50%; left: 50%;
   width: 17px; height: 17px;
   border-radius: 50%;
-  background: #1A1208;
+  background: #1A1208 !important;
   transform: translate(-50%, -50%);
   will-change: transform;
   transition: transform 0.07s ease-out;
@@ -109,58 +204,13 @@
   position: absolute;
   top: 2px; left: 3px;
   width: 5px; height: 5px;
-  background: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.75) !important;
   border-radius: 50%;
 }
 
-/* Eyes are ALWAYS light-mode — never change in dark mode */
-/* These rules lock the values unconditionally */
-.eye-socket {
-  background: white !important;
-}
-.pupil {
-  background: #1A1208 !important;
-}
-.pupil::after {
-  background: rgba(255,255,255,0.75) !important;
-}
-
-/* ── TEXT BLOCK ── */
-.hero-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.hero-greeting {
-  font-family: var(--font-body);
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-  letter-spacing: 0.01em;
-}
-
-.hero-headline {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 4.2vw, 54px);
-  line-height: 1.18;
-  color: var(--text);
-  letter-spacing: -0.01em;
-  margin-bottom: 40px;
-}
-
-.hero-headline .highlight {
-  color: var(--primary);
-  display: inline;
-}
-
-/* ── ACTIONS ── */
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
+/* =====================================================
+   BUTTONS
+===================================================== */
 .btn-view-projects {
   display: inline-flex;
   align-items: center;
@@ -179,8 +229,7 @@
 }
 .btn-view-projects::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: var(--primary-dark);
   transform: scaleX(0);
   transform-origin: right;
@@ -188,44 +237,28 @@
 }
 .btn-view-projects:hover::before { transform: scaleX(1); transform-origin: left; }
 .btn-view-projects span { position: relative; z-index: 1; }
-.btn-view-projects:hover {
-  box-shadow: 0 6px 22px var(--shadow-md);
-  transform: translateY(-1px);
-}
+.btn-view-projects:hover { box-shadow: 0 6px 22px var(--shadow-md); transform: translateY(-1px); }
 
-/* ── SOCIAL CIRCLES ── */
-.social-circles {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.social-circles { display: flex; align-items: center; gap: 10px; }
 
 .social-circle {
   width: 46px; height: 46px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
+  border-radius: 50%; overflow: hidden; flex-shrink: 0;
   transition: transform var(--t-fast), box-shadow var(--t-fast);
 }
 .social-circle img { width: 100%; height: 100%; }
-.social-circle:hover {
-  transform: translateY(-3px) scale(1.07);
-  box-shadow: 0 8px 20px var(--shadow-md);
-}
-[data-theme="dark"] .social-circle img {
-  filter: brightness(0.82) contrast(1.1);
-}
+.social-circle:hover { transform: translateY(-3px) scale(1.07); box-shadow: 0 8px 20px var(--shadow-md); }
+[data-theme="dark"] .social-circle img { filter: brightness(0.82) contrast(1.1); }
 
-/* ── DIVIDER ── */
+/* divider */
 .hero-divider {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
-  background: var(--border);
-  z-index: 1;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: var(--border); z-index: 1;
 }
 
-/* ── RESPONSIVE ── */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 @media (max-width: 860px) {
   .hero-layout {
     flex-direction: column;
@@ -235,21 +268,25 @@
     padding-top: 110px;
     padding-bottom: 72px;
   }
+  /* face order: after text on mobile */
+  .hero-face { order: -1; }
   .hero-actions { justify-content: center; }
   .hero-headline { font-size: clamp(28px, 6vw, 44px); }
+
+  /* greeting center on mobile */
+  .hero--greet .hero-greeting,
+  .hero--expand .hero-greeting { left: 50%; }
 }
 
 @media (max-width: 480px) {
   .hero-face { width: 180px; }
   .face-wrap { width: 180px; height: 208px; }
-
   .eye-socket { width: 30px; height: 26px; }
   .eye-socket:nth-child(1) { left: calc(39% - 15px); top: calc(38% - 13px); }
   .eye-socket:nth-child(2) { left: calc(59% - 15px); top: calc(38% - 13px); }
   .pupil { width: 13px; height: 13px; }
-
   .hero-headline { font-size: 28px; margin-bottom: 32px; }
-  .hero-greeting { font-size: 0.95rem; }
+  .hero--expand .hero-greeting { font-size: clamp(1.8rem, 8vw, 3rem); }
   .btn-view-projects { padding: 12px 24px; font-size: 0.88rem; }
   .social-circle { width: 40px; height: 40px; }
 }

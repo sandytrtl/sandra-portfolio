@@ -1,65 +1,61 @@
+/* About section */
 .about {
   padding: 120px 0 0;
 }
 
+/* split-column grid: left ~35% anchor, right ~60% body */
 .about-inner {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--px);
-  margin-bottom: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1.65fr;
+  gap: 72px;
+  align-items: start;
+  margin-bottom: 100px;
 }
 
-/* Single-column, left-aligned content */
-.about-content {
-  max-width: 720px; /* readable line length */
-}
-
-.about-body {
+/* ── Left anchor ── */
+.about-anchor {
+  position: sticky;
+  top: 96px;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 28px;
 }
 
-/* ── Text ── */
-.about-text {
-  font-size: 1.05rem;
-  line-height: 1.9;
-  color: var(--text-muted);
-  margin-bottom: 18px;
+/* photo */
+.about-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
 }
-.about-text:last-of-type { margin-bottom: 0; }
-.about-text em {
-  color: var(--primary);
-  font-style: normal;
+.about-photo-inner {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
 }
 
-/* ── Info grid ── */
+/* info stacked */
 .about-info {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px 40px;
-  margin-top: 36px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px;
 }
-
-.info-item { display: flex; flex-direction: column; gap: 5px; }
-
+.info-item { display: flex; flex-direction: column; gap: 4px; }
 .info-label {
   font-size: 0.67rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-light);
 }
-
-.info-value {
-  font-size: 0.95rem;
-  color: var(--text);
-}
+.info-value { font-size: 0.95rem; color: var(--text); }
 .info-available { color: var(--primary) !important; }
 
-/* ── Download Resume button ── */
+/* resume btn */
 .btn-resume {
   display: inline-flex;
   align-items: center;
@@ -79,8 +75,7 @@
 }
 .btn-resume::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: var(--primary);
   transform: scaleX(0);
   transform-origin: right;
@@ -91,6 +86,43 @@
 .btn-resume:hover { color: #fff; box-shadow: 0 6px 20px var(--shadow-md); transform: translateY(-1px); }
 .btn-resume svg { width: 17px; height: 17px; position: relative; z-index: 1; flex-shrink: 0; }
 .btn-resume span { position: relative; z-index: 1; }
+
+/* ── Right body — big staggered text ── */
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* push text down to start at visual midpoint of left column */
+  padding-top: 56px;
+}
+
+/* each paragraph = one stagger line */
+.about-line {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 2.8vw, 2.4rem);
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 48px;
+  text-align: left;
+
+  /* initial hidden state */
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.about-line:last-child { margin-bottom: 0; }
+
+/* triggered state */
+.stagger-line--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* em/italic accent */
+.about-line em {
+  color: var(--primary);
+  font-style: normal;
+}
 
 /* ── Marquee ── */
 .marquee-wrapper {
@@ -117,18 +149,24 @@
 }
 .marquee-dot { color: var(--primary); font-size: 0.5rem; }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 860px) {
-  .about { padding: 96px 0 0; }
-  .about-inner { margin-bottom: 60px; }
-  .about-content { max-width: 100%; }
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 900px) {
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+  .about-anchor { position: static; }
+  .about-photo { max-width: 320px; }
+  .about-body { padding-top: 0; }
+  .about-line { font-size: clamp(1.3rem, 4vw, 1.8rem); }
 }
 
 @media (max-width: 480px) {
-  .about-text { font-size: 0.95rem; }
-  .about-info {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
+  .about { padding: 80px 0 0; }
+  .about-line { font-size: 1.25rem; margin-bottom: 32px; }
   .btn-resume { width: 100%; justify-content: center; }
+  .about-info { gap: 12px; }
 }

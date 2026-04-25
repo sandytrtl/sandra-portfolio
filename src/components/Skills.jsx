@@ -1,3 +1,4 @@
+/* Skills.jsx */
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import './Skills.css';

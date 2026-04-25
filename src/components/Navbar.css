@@ -1,3 +1,6 @@
+/* ============================================
+   NAVBAR
+============================================ */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -105,6 +108,9 @@
 .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+/* ============================================
+   MOBILE NAV
+============================================ */
 @media (max-width: 860px) {
   .hamburger { display: flex; }
 

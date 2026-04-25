@@ -1,3 +1,6 @@
+/* ============================================
+   CONTACT
+============================================ */
 .contact {
   padding: 120px 0 0;
   position: relative;
@@ -118,6 +121,9 @@
 }
 .contact-link:hover .link-arrow { opacity: 1; transform: translateX(0); }
 
+/* ============================================
+   RIGHT CARD — redesigned
+============================================ */
 .contact-card {
   background: var(--bg-card);
   border: 1.5px solid var(--border-strong);
