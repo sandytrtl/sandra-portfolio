@@ -1,34 +1,92 @@
-/* ============================================
-   CONTACT
-============================================ */
+/* contact section */
 .contact {
   padding: 120px 0 0;
   position: relative;
+  overflow: hidden;
+  background-color: var(--bg);
 }
 
-.contact-inner {
+/* vertical falling light lines */
+.contact-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100%;
+  margin: auto;
+  width: 90vw;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-line {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  background: rgba(156, 119, 92, 0.12);
+  overflow: hidden;
+}
+[data-theme="dark"] .contact-line {
+  background: rgba(196, 168, 130, 0.09);
+}
+
+.contact-line::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 15vh;
+  width: 100%;
+  top: -50%;
+  left: 0;
+  background: linear-gradient(to bottom,
+    rgba(156,119,92,0) 0%,
+    rgba(156,119,92,0.8) 75%,
+    rgba(156,119,92,1) 100%);
+  animation: line-drop 7s 0s infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+}
+[data-theme="dark"] .contact-line::after {
+  background: linear-gradient(to bottom,
+    rgba(196,168,130,0) 0%,
+    rgba(196,168,130,0.7) 75%,
+    rgba(196,168,130,1) 100%);
+}
+
+@keyframes line-drop {
+  0%   { top: -50%; }
+  100% { top: 110%; }
+}
+
+.contact-line:nth-child(1) { margin-left: -25%; }
+.contact-line:nth-child(1)::after { animation-delay: 2s; }
+
+.contact-line:nth-child(2) { margin-left: 0; }
+
+.contact-line:nth-child(3) { margin-left: 25%; }
+.contact-line:nth-child(3)::after { animation-delay: 2.5s; }
+
+/* top text block */
+.contact-top {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--px);
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 72px;
-  align-items: start;
-  padding-bottom: 96px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── Left ── */
 .contact-heading {
-  font-size: clamp(38px, 4.5vw, 62px);
-  line-height: 1.1;
+  font-size: clamp(38px, 5.5vw, 72px);
+  line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--text);
   margin-top: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   overflow: hidden;
 }
 
-/* ── TOGETHER split-word animation ── */
+/* TOGETHER animation */
 .together-wrap {
   display: inline-flex;
   align-items: baseline;
@@ -37,20 +95,15 @@
   overflow: hidden;
   line-height: 1.1;
 }
-
-.toge,
-.ther {
+.toge, .ther {
   display: inline-block;
   font-family: var(--font-display);
   letter-spacing: -0.02em;
   animation-fill-mode: forwards;
 }
-
-/* Before trigger: halves are off-screen */
 .toge { transform: translateX(-120%); opacity: 0; }
 .ther { transform: translateX(120%);  opacity: 0; }
 
-/* After trigger */
 @keyframes slide-in-left {
   from { transform: translateX(-120%); opacity: 0; }
   to   { transform: translateX(0);     opacity: 1; }
@@ -59,7 +112,6 @@
   from { transform: translateX(120%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
 }
-
 .together-wrap.animate .toge {
   animation: slide-in-left  0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 }
@@ -67,233 +119,82 @@
   animation: slide-in-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 }
 
-/* ── Contact sub ── */
 .contact-sub {
-  font-size: 0.97rem;
-  color: var(--text-muted);
-  line-height: 1.75;
-  margin-bottom: 44px;
-  max-width: 380px;
-}
-
-/* ── Links list ── */
-.contact-links {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--border);
-}
-.contact-link {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border);
-  color: var(--text);
-  transition: padding-left var(--t), color var(--t-fast);
-}
-.contact-link:hover { padding-left: 10px; color: var(--primary); }
-
-.link-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  width: 66px;
-  flex-shrink: 0;
-  transition: color var(--t-fast);
-}
-.contact-link:hover .link-label { color: var(--primary); }
-
-.link-value {
-  flex: 1;
-  font-size: 0.88rem;
-  min-width: 0;
-  word-break: break-word;
-  transition: color var(--t-fast);
-}
-.link-arrow {
   font-size: 1rem;
-  color: var(--primary);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity var(--t-fast), transform var(--t-fast);
-  flex-shrink: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
-.contact-link:hover .link-arrow { opacity: 1; transform: translateX(0); }
 
-/* ============================================
-   RIGHT CARD — redesigned
-============================================ */
-.contact-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-lg);
-  padding: 44px 40px;
+/* physics arena */
+.contact-arena {
   position: relative;
+  width: 100%;
+  height: 340px;
   overflow: hidden;
-  transition: background var(--t), border-color var(--t);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  z-index: 2;
 }
 
-/* Top gradient accent bar */
-.contact-card::before {
-  content: '';
+/* pill base */
+.phys-pill {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(to right, var(--primary), var(--primary-light), transparent);
-}
-
-/* Status badge */
-.card-status {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  background: var(--tag-bg);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 6px 14px;
-  width: fit-content;
-  margin-bottom: 28px;
-}
-
-.status-dot {
-  width: 7px; height: 7px;
-  background: #4CAF50;
-  border-radius: 50%;
-  flex-shrink: 0;
-  animation: pulse-dot 2.2s ease infinite;
-  box-shadow: 0 0 0 0 rgba(76,175,80,0.4);
-}
-@keyframes pulse-dot {
-  0%   { box-shadow: 0 0 0 0   rgba(76,175,80,0.4); }
-  70%  { box-shadow: 0 0 0 8px rgba(76,175,80,0); }
-  100% { box-shadow: 0 0 0 0   rgba(76,175,80,0); }
-}
-
-/* Big question text */
-.card-question {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 28px;
-}
-
-/* Divider */
-.card-divider {
-  width: 40px;
-  height: 2px;
-  background: var(--primary);
-  border-radius: 2px;
-  margin-bottom: 24px;
-}
-
-/* Value propositions */
-.card-props {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 36px;
-}
-.card-props li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-.prop-icon {
-  color: var(--primary);
-  font-size: 0.75rem;
-  flex-shrink: 0;
-  width: 16px;
-  text-align: center;
-}
-
-/* CTA button */
-.card-cta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background: var(--primary);
-  color: #fff;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow var(--t-fast), transform var(--t-fast);
-}
-.card-cta::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--primary-dark);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.38s var(--ease);
-}
-.card-cta:hover::before { transform: scaleX(1); transform-origin: left; }
-.card-cta:hover {
-  box-shadow: 0 8px 28px var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.cta-label { position: relative; z-index: 1; }
-
-.cta-icon {
-  position: relative;
-  z-index: 1;
-  width: 32px; height: 32px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  transition: background var(--t-fast), transform var(--t-fast);
+  gap: 0;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
+  cursor: grab;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  will-change: left, top;
 }
-.card-cta:hover .cta-icon {
-  background: rgba(255,255,255,0.25);
-  transform: translateX(3px);
+.phys-pill:active { cursor: grabbing; }
+.phys-pill:hover {
+  box-shadow: 0 10px 32px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.3);
 }
-.cta-icon svg { width: 15px; height: 15px; }
 
-/* Decorative corner stripes */
-.card-corner {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  opacity: 0.18;
+/* icon circle pill */
+.phys-pill--icon {
+  padding: 14px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
 }
-.card-corner span {
-  display: block;
-  height: 1.5px;
-  background: var(--primary);
-  border-radius: 1px;
-}
-.card-corner span:nth-child(1) { width: 32px; }
-.card-corner span:nth-child(2) { width: 22px; }
-.card-corner span:nth-child(3) { width: 12px; }
 
-/* ── Footer ── */
+/* snackbar */
+.snackbar {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #c0392b;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: 100px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 2000;
+  opacity: 0;
+  transition: transform 0.35s var(--ease), opacity 0.35s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.snackbar--show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* footer */
 .footer {
   border-top: 1px solid var(--border);
   padding: 28px 0;
+  position: relative;
+  z-index: 1;
 }
 .footer-inner {
   max-width: var(--max-w);
@@ -314,28 +215,16 @@
 .footer-copy { font-size: 0.78rem; color: var(--text-light); }
 .footer-built { font-size: 0.78rem; color: var(--primary); }
 
-/* ============================================
-   RESPONSIVE
-============================================ */
+/* responsive */
 @media (max-width: 860px) {
   .contact { padding: 96px 0 0; }
-  .contact-inner {
-    grid-template-columns: 1fr;
-    gap: 48px;
-    padding-bottom: 72px;
-  }
-  .contact-sub { max-width: 100%; }
-  .card-question { font-size: 1.6rem; }
+  .contact-heading { font-size: clamp(32px, 7vw, 52px); }
+  .contact-arena { height: 420px; }
 }
-
 @media (max-width: 480px) {
-  .contact-heading { font-size: 36px; }
-  .contact-card { padding: 32px 24px; }
-  .link-label { width: 56px; font-size: 0.62rem; }
-  .link-value { font-size: 0.82rem; }
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
+  .contact-heading { font-size: 30px; }
+  .contact-arena { height: 480px; }
+  .phys-pill { font-size: 0.88rem; padding: 12px 20px; }
+  .phys-pill--icon { width: 48px; height: 48px; padding: 12px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
 }

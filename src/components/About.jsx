@@ -45,7 +45,7 @@ export default function About() {
 
           {/* photo placeholder */}
           <div className="about-photo">
-            <div className="about-photo-inner" />
+            <img src="/images/Profile.svg" alt="Sandra Agustin" className="about-photo-img" />
           </div>
 
           {/* compact info */}
@@ -80,7 +80,7 @@ export default function About() {
             A Computer Science student passionate about the intersection of design and development.
           </p>
           <p className="about-line stagger-line">
-            I love creating things that look beautiful and work beautifully. Whether that's crafting UI in Figma or building interactive components, I bring attention to detail to every pixel.
+            I love creating things that look beautiful and work beautifully. Whether that's crafting UI or building interactive components, I bring attention to detail to every pixel. Making it all work the way I envision is the most rewarding part of the process. 
           </p>
           <p className="about-line stagger-line">
             I'm currently seeking an internship or OJT opportunity where I can grow, contribute, and make real things people love to use.

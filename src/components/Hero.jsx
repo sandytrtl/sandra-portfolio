@@ -4,24 +4,28 @@ import './Hero.css';
 export default function Hero() {
   const leftEyeRef  = useRef(null);
   const rightEyeRef = useRef(null);
-  const [phase, setPhase] = useState('greet'); // greet → expand → content → face
+  /* greet → expand → shrink → content → face */
+  const [phase, setPhase] = useState('greet');
+
+  /* scroll to top on mount so intro always plays from hero */
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   /* eye tracking */
   useEffect(() => {
     const move = (e) => {
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
       [leftEyeRef, rightEyeRef].forEach((ref) => {
         if (!ref.current) return;
-        const rect  = ref.current.getBoundingClientRect();
-        const cx    = rect.left + rect.width  / 2;
-        const cy    = rect.top  + rect.height / 2;
-        const angle = Math.atan2(clientY - cy, clientX - cx);
-        const r     = Math.min(Math.hypot(clientX - cx, clientY - cy) * 0.11, 5.5);
-        const pupil = ref.current.querySelector('.pupil');
-        if (pupil) {
-          pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle)*r}px), calc(-50% + ${Math.sin(angle)*r}px))`;
-        }
+        const r   = ref.current.getBoundingClientRect();
+        const ex  = r.left + r.width  / 2;
+        const ey  = r.top  + r.height / 2;
+        const ang = Math.atan2(cy - ey, cx - ex);
+        const d   = Math.min(Math.hypot(cx - ex, cy - ey) * 0.11, 5.5);
+        const p   = ref.current.querySelector('.pupil');
+        if (p) p.style.transform = `translate(calc(-50% + ${Math.cos(ang)*d}px), calc(-50% + ${Math.sin(ang)*d}px))`;
       });
     };
     window.addEventListener('mousemove', move);
@@ -32,16 +36,18 @@ export default function Hero() {
     };
   }, []);
 
-  /* intro sequence */
+  /* intro sequence timing */
   useEffect(() => {
-    // 0ms:   "Hello, I'm Sandra." appears small, centered, static
-    // 500ms: it grows big and floats up to final position
-    // 1100ms: headline + actions fade up into place
-    // 1700ms: face slides in from left
-    const t1 = setTimeout(() => setPhase('expand'),  500);
-    const t2 = setTimeout(() => setPhase('content'), 1100);
-    const t3 = setTimeout(() => setPhase('face'),    1700);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    /* greet   0–2000ms   : small, centered, static */
+    /* expand  2000–5000ms: grows large, floats up   */
+    /* shrink  5000–7000ms: shrinks back, eases up   */
+    /* content 7000ms+    : snaps to flow position   */
+    /* face    7600ms+    : slides in from left      */
+    const t1 = setTimeout(() => setPhase('expand'),  2000);
+    const t2 = setTimeout(() => setPhase('shrink'),  5000);
+    const t3 = setTimeout(() => setPhase('content'), 7000);
+    const t4 = setTimeout(() => setPhase('face'),    7600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
   }, []);
 
   return (
@@ -60,10 +66,8 @@ export default function Hero() {
         </div>
 
         <div className="hero-text">
-          {/* greeting — starts small+centered, then grows+moves to position */}
           <p className="hero-greeting">Hello, I'm Sandra.</p>
 
-          {/* headline — fades up after expand */}
           <h1 className="hero-headline">
             I love to{' '}
             <span className="highlight">design</span>
@@ -72,7 +76,6 @@ export default function Hero() {
             {' '}things into real, working websites.
           </h1>
 
-          {/* actions — fades up after headline */}
           <div className="hero-actions">
             <a href="#projects" className="btn-view-projects">
               <span>View Projects</span>

@@ -1,4 +1,4 @@
-/* grid bg */
+/* grid bg animation */
 @keyframes bg-scrolling {
   0%   { background-position: 50px 50px; }
   100% { background-position: 0 0; }
@@ -34,70 +34,89 @@
   z-index: 1;
 }
 
-/* =====================================================
-   GREETING — the heart of the intro
-   Phase "greet":   small, centered in viewport, static
-   Phase "expand":  grows to large display size, slides up
-   Phase "content"+ settles into its final spot in hero-text
-===================================================== */
+/* GREETING — 5-phase intro
+   greet  : fixed center, small, static 2s
+   expand : grows large, floats up 3s
+   shrink : shrinks back small, eases further up 2s
+   content: snaps into natural flow position
+   face   : same as content (face has its own transition)
+*/
+.hero-greeting {
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+}
 
-/* In "greet" phase: greeting is pinned to center of viewport */
+/* greet — small, dead center, static */
 .hero--greet .hero-greeting {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
   opacity: 1;
   z-index: 20;
   margin: 0;
   white-space: nowrap;
   transition: none;
-  color: var(--text-muted);
-  font-family: var(--font-body);
-  letter-spacing: 0.01em;
 }
 
-/* In "expand" phase: grows to big display text, starts moving up */
+/* expand — grows to display size, drifts up */
 .hero--expand .hero-greeting {
   position: fixed;
   top: 50%;
   left: 50%;
-  /* grow large, begin floating up */
-  transform: translate(-50%, calc(-50% - 60px));
-  font-size: clamp(2.8rem, 7vw, 6rem);
+  transform: translate(-50%, calc(-50% - 80px));
+  font-size: clamp(3rem, 8vw, 7rem);
   font-family: var(--font-display);
+  color: var(--text);
+  letter-spacing: -0.02em;
   opacity: 1;
   z-index: 20;
   margin: 0;
   white-space: nowrap;
-  color: var(--text);
-  letter-spacing: -0.02em;
   transition:
-    font-size 2s cubic-bezier(0.16, 1, 0.3, 1),
-    transform  10s cubic-bezier(0.16, 1, 0.3, 1),
-    color      10s ease;
+    font-size 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    color      0.4s ease;
 }
 
-/* In "content"+ phases: snaps back to its natural place in the flow */
+/* shrink — shrinks back to small, eases higher up toward top */
+.hero--shrink .hero-greeting {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 200px));
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  opacity: 1;
+  z-index: 20;
+  margin: 0;
+  white-space: nowrap;
+  transition:
+    font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    color      0.4s ease;
+}
+
+/* content / face — snaps back into natural DOM flow */
 .hero--content .hero-greeting,
 .hero--face    .hero-greeting {
   position: static;
   transform: none;
   font-size: 1.1rem;
   font-family: var(--font-body);
-  opacity: 1;
-  margin-bottom: 14px;
   color: var(--text-muted);
   letter-spacing: 0.01em;
-  /* instant snap — no transition — so it just appears in place */
-  transition: none;
+  opacity: 1;
+  margin-bottom: 14px;
   white-space: normal;
+  transition: none;
 }
 
-/* =====================================================
-   HEADLINE
-===================================================== */
+/* HEADLINE */
 .hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 4.2vw, 54px);
@@ -105,62 +124,43 @@
   color: var(--text);
   letter-spacing: -0.01em;
   margin-bottom: 40px;
-
-  /* hidden until "content" phase */
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 3s var(--ease), transform 3s var(--ease);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
 .hero--content .hero-headline,
-.hero--face    .hero-headline {
-  opacity: 1;
-  transform: translateY(0);
-}
+.hero--face    .hero-headline { opacity: 1; transform: translateY(0); }
 
 .highlight { color: var(--primary); display: inline; }
 
-/* =====================================================
-   ACTIONS
-===================================================== */
+/* ACTIONS */
 .hero-actions {
   display: flex;
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
-
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.55s var(--ease) 0.18s, transform 0.55s var(--ease) 0.18s;
 }
 .hero--content .hero-actions,
-.hero--face    .hero-actions {
-  opacity: 1;
-  transform: translateY(0);
-}
+.hero--face    .hero-actions { opacity: 1; transform: translateY(0); }
 
-/* =====================================================
-   FACE — slides in from left after content
-===================================================== */
+/* FACE — slides in from left */
 .hero-face {
   flex-shrink: 0;
-  position: relative;
   width: 230px;
-
   opacity: 0;
   transform: translateX(-48px);
   transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
 }
-.hero--face .hero-face {
-  opacity: 1;
-  transform: translateX(0);
-}
+.hero--face .hero-face { opacity: 1; transform: translateX(0); }
 
 .face-wrap {
   position: relative;
   width: 230px;
   height: 266px;
   animation: float 5s ease-in-out infinite;
-  will-change: transform;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -176,7 +176,7 @@
   filter: invert(1) hue-rotate(180deg) brightness(0.88);
 }
 
-/* eyes — always light-mode */
+/* eyes — locked to light-mode colours always */
 .eyes-overlay { position: absolute; inset: 0; pointer-events: none; }
 
 .eye-socket {
@@ -208,9 +208,7 @@
   border-radius: 50%;
 }
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+/* buttons */
 .btn-view-projects {
   display: inline-flex;
   align-items: center;
@@ -231,8 +229,7 @@
   content: '';
   position: absolute; inset: 0;
   background: var(--primary-dark);
-  transform: scaleX(0);
-  transform-origin: right;
+  transform: scaleX(0); transform-origin: right;
   transition: transform .38s var(--ease);
 }
 .btn-view-projects:hover::before { transform: scaleX(1); transform-origin: left; }
@@ -240,7 +237,6 @@
 .btn-view-projects:hover { box-shadow: 0 6px 22px var(--shadow-md); transform: translateY(-1px); }
 
 .social-circles { display: flex; align-items: center; gap: 10px; }
-
 .social-circle {
   width: 46px; height: 46px;
   border-radius: 50%; overflow: hidden; flex-shrink: 0;
@@ -250,32 +246,23 @@
 .social-circle:hover { transform: translateY(-3px) scale(1.07); box-shadow: 0 8px 20px var(--shadow-md); }
 [data-theme="dark"] .social-circle img { filter: brightness(0.82) contrast(1.1); }
 
-/* divider */
 .hero-divider {
   position: absolute; bottom: 0; left: 0; right: 0;
   height: 1px; background: var(--border); z-index: 1;
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+/* responsive */
 @media (max-width: 860px) {
   .hero-layout {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 36px;
-    padding-top: 110px;
-    padding-bottom: 72px;
+    flex-direction: column; align-items: center;
+    text-align: center; gap: 36px;
+    padding-top: 110px; padding-bottom: 72px;
   }
-  /* face order: after text on mobile */
   .hero-face { order: -1; }
   .hero-actions { justify-content: center; }
   .hero-headline { font-size: clamp(28px, 6vw, 44px); }
-
-  /* greeting center on mobile */
-  .hero--greet .hero-greeting,
-  .hero--expand .hero-greeting { left: 50%; }
+  .hero--expand .hero-greeting { font-size: clamp(2.2rem, 7vw, 5rem); }
+  .hero--shrink .hero-greeting { font-size: clamp(0.9rem, 2.5vw, 1.1rem); }
 }
 
 @media (max-width: 480px) {
