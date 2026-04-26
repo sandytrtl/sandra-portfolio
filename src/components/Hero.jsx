@@ -4,10 +4,11 @@ import './Hero.css';
 export default function Hero() {
   const leftEyeRef  = useRef(null);
   const rightEyeRef = useRef(null);
+  const timers      = useRef([]);
   /* greet → expand → shrink → content → face */
   const [phase, setPhase] = useState('greet');
 
-  /* scroll to top on mount so intro always plays from hero */
+  /* scroll to top on mount */
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
@@ -36,25 +37,48 @@ export default function Hero() {
     };
   }, []);
 
-  /* intro sequence timing */
+  /* intro — only runs while hero section is visible.
+     If the user scrolls away, clear all timers and skip to done. */
   useEffect(() => {
-    /* greet   0–2000ms   : small, centered, static */
-    /* expand  2000–5000ms: grows large, floats up   */
-    /* shrink  5000–7000ms: shrinks back, eases up   */
-    /* content 7000ms+    : snaps to flow position   */
-    /* face    7600ms+    : slides in from left      */
-    const t1 = setTimeout(() => setPhase('expand'),  2000);
-    const t2 = setTimeout(() => setPhase('shrink'),  5000);
-    const t3 = setTimeout(() => setPhase('content'), 7000);
-    const t4 = setTimeout(() => setPhase('face'),    7600);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+    const hero = document.getElementById('hero');
+
+    const start = () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [
+        setTimeout(() => setPhase('expand'),  2000),
+        setTimeout(() => setPhase('shrink'),  5000),
+        setTimeout(() => setPhase('content'), 7000),
+        setTimeout(() => setPhase('face'),    7600),
+      ];
+    };
+
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        /* hero came into view — only restart if still in greet */
+        setPhase(p => {
+          if (p === 'greet') start();
+          return p;
+        });
+      } else {
+        /* hero left viewport — cancel pending timers, jump to done */
+        timers.current.forEach(clearTimeout);
+        setPhase('face');
+      }
+    }, { threshold: 0.1 });
+
+    if (hero) obs.observe(hero);
+    start(); /* begin on mount */
+
+    return () => {
+      timers.current.forEach(clearTimeout);
+      obs.disconnect();
+    };
   }, []);
 
   return (
     <section id="hero" className={`hero hero--${phase}`}>
       <div className="hero-layout">
 
-        {/* face — slides in last */}
         <div className="hero-face">
           <div className="face-wrap">
             <img src="/images/Face.svg" alt="Sandra's illustrated character" className="face-base" draggable="false" />
@@ -81,13 +105,13 @@ export default function Hero() {
               <span>View Projects</span>
             </a>
             <div className="social-circles">
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="social-circle" aria-label="GitHub">
+              <a href="https://github.com/sandytrtl" target="_blank" rel="noreferrer" className="social-circle" aria-label="GitHub">
                 <img src="/images/GithubLogo.svg" alt="" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="social-circle" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/sandra-agustin" target="_blank" rel="noreferrer" className="social-circle" aria-label="LinkedIn">
                 <img src="/images/LinkedInLogo.svg" alt="" />
               </a>
-              <a href="mailto:agustinsandra.sca@gmail.com" className="social-circle" aria-label="Email">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=agustin.sandra.sca@gmail.com&su=Project%20Inquiry" target="_blank" rel="noreferrer" className="social-circle" aria-label="Email">
                 <img src="/images/GmailLogo.svg" alt="" />
               </a>
             </div>

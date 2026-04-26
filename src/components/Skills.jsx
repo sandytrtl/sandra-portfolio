@@ -16,9 +16,9 @@ const ALL_SKILLS = [
   { name: 'MySQL',       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',             color: '#4479A1' },
   { name: 'PostgreSQL',  logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',  color: '#336791' },
   { name: 'GitHub',      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',          color: '#6e5494' },
-  { name: 'Vite', logo: '/images/ViteLogo.svg',                                                             color: '#646CFF' },
-  { name: 'UI Design',   logo: null, icon: '✦',                                                                           color: '#9C775C' },
-  { name: 'UX Research', logo: null, icon: '◎',                                                                           color: '#C4A882' },
+  { name: 'Vite',        logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg', color: '#646CFF' },
+  { name: 'UI Design',   logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',  color: '#9C775C' },
+  { name: 'UX Research', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg',  color: '#C4A882' },
 ];
 
 const COLS  = 5;

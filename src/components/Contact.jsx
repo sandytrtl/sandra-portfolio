@@ -313,8 +313,8 @@ function PhysicsArena({ onCopyNumber }) {
   function handleAction(pill) {
     const GMAIL = 'https://mail.google.com/mail/?view=cm&fs=1&to=agustin.sandra.sca@gmail.com&su=Project%20Inquiry';
     if (pill.action === 'call')     onCopyNumber();
-    if (pill.action === 'github')   window.open('https://github.com/sandraagustin',          '_blank');
-    if (pill.action === 'linkedin') window.open('https://www.linkedin.com/in/sandraagustin', '_blank');
+    if (pill.action === 'github')   window.open('https://github.com/sandytrtl',                  '_blank');
+    if (pill.action === 'linkedin') window.open('https://www.linkedin.com/in/sandra-agustin',     '_blank');
     if (pill.action === 'gmail')    window.open(GMAIL, '_blank');
   }
 

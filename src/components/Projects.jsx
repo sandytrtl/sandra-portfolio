@@ -12,8 +12,7 @@ const projects = [
     color: '#9C775C',
     bgAccent: 'rgba(156,119,92,0.05)',
     images: ['/images/web1.svg', '/images/web2.svg', '/images/web3.svg'],
-    github: '#',
-    liveUrl: 'https://pawlar-website.onrender.com/',
+    github: 'https://github.com/sandytrtl/Pawlar-Website',
     clickable: true,
   },
   {
@@ -26,8 +25,7 @@ const projects = [
     color: '#9C775C',
     bgAccent: 'rgba(156,119,92,0.05)',
     images: ['/images/Home.svg', '/images/Pawlar.svg', '/images/HomeWithPet.svg'],
-    github: '#',
-    liveUrl: null,
+    github: 'https://github.com/sandytrtl/Pawlar',
     clickable: true, // images open in modal
   },
 ];
