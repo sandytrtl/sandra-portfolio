@@ -340,12 +340,12 @@
 
 .modal-close {
   position: fixed;
-  top: 20px;
+  top: 72px;
   right: 24px;
   width: 44px; height: 44px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.2);
   color: #fff;
   display: flex;
   align-items: center;
@@ -354,9 +354,10 @@
   transition: background var(--t-fast), transform var(--t-fast);
   z-index: 1001;
   backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
 }
 .modal-close:hover {
-  background: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.35);
   transform: scale(1.1);
 }
 .modal-close svg { width: 18px; height: 18px; }
