@@ -4,25 +4,19 @@ Hi! I'm Sandra, an aspiring UX/UI Designer and Front-end Developer based in the 
 
 **→ [Live Site](https://YOUR_SITE_URL)** &nbsp;&nbsp;·&nbsp;&nbsp; **[Resume](public/Sandra_Agustin_Resume.pdf)**
 
----
-
 ## About Me
 
 I sit at the intersection of design and code. I care about the details — from interaction patterns and visual hierarchy to clean, maintainable component architecture. 
 
----
 
 ## What's in This Portfolio
 
-| Section | 
-|---|---|
+Section: 
 | **Hero** 
 | **About**
 | **Skills** 
 | **Projects** 
 | **Contact** 
-
----
 
 ## Tech Stack
 
@@ -32,7 +26,6 @@ I sit at the intersection of design and code. I care about the details — from 
 - **CSS Variables** — light/dark theme support
 - **Google Fonts** — Dela Gothic One + Della Respira
 
----
 
 ## Getting Started
 
@@ -49,8 +42,6 @@ npm run build
 # Preview production build
 npm run preview
 ```
-
----
 
 ## Connect
 
