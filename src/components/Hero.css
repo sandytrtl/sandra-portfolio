@@ -76,17 +76,22 @@
   margin: 0;
   white-space: nowrap;
   transition:
-    font-size 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform  0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    font-size 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  0.5s cubic-bezier(0.16, 1, 0.3, 1),
     color      0.4s ease;
 }
 
-/* shrink — shrinks back to small, eases higher up toward top */
+/* shrink — shrinks back small AND eases up to final resting spot */
+/* We target where the greeting ends up in the hero-layout so it
+   appears to glide directly into position */
 .hero--shrink .hero-greeting {
   position: fixed;
-  top: 50%;
+  /* final position is roughly top: calc(50vh - hero_content_offset)
+     We approximate the final Y as top:20vh so it lands near where
+     the static greeting will be after content phase */
+  top: 20vh;
   left: 50%;
-  transform: translate(-50%, calc(-50% - 200px));
+  transform: translate(-50%, 0);
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   font-family: var(--font-body);
   color: var(--text-muted);
@@ -96,12 +101,13 @@
   margin: 0;
   white-space: nowrap;
   transition:
-    font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    transform  0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    color      0.4s ease;
+    font-size  0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    top        1.1s  cubic-bezier(0.16, 1, 0.3, 1),
+    transform  1.1s  cubic-bezier(0.16, 1, 0.3, 1),
+    color      0.4s  ease;
 }
 
-/* content / face — snaps back into natural DOM flow */
+/* content / face — greeting is already near its spot, just make it static */
 .hero--content .hero-greeting,
 .hero--face    .hero-greeting {
   position: static;
@@ -116,7 +122,7 @@
   transition: none;
 }
 
-/* HEADLINE */
+/* headline — eases up from below greeting after content phase */
 .hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 4.2vw, 54px);
@@ -125,8 +131,8 @@
   letter-spacing: -0.01em;
   margin-bottom: 40px;
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transform: translateY(36px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
 }
 .hero--content .hero-headline,
 .hero--face    .hero-headline { opacity: 1; transform: translateY(0); }
@@ -186,8 +192,8 @@
   background: white !important;
   overflow: hidden;
 }
-.eye-socket:nth-child(1) { left: calc(39% - 19px); top: calc(38% - 16.5px); }
-.eye-socket:nth-child(2) { left: calc(59% - 19px); top: calc(38% - 16.5px); }
+.eye-socket:nth-child(1) { left: calc(30% - 19px); top: calc(32% - 16.5px); }
+.eye-socket:nth-child(2) { left: calc(63% - 19px); top: calc(30% - 16.5px); }
 
 .pupil {
   position: absolute;
@@ -261,8 +267,23 @@
   .hero-face { order: -1; }
   .hero-actions { justify-content: center; }
   .hero-headline { font-size: clamp(28px, 6vw, 44px); }
-  .hero--expand .hero-greeting { font-size: clamp(2.2rem, 7vw, 5rem); }
-  .hero--shrink .hero-greeting { font-size: clamp(0.9rem, 2.5vw, 1.1rem); }
+
+  /* center greeting in every phase on mobile */
+  .hero--greet  .hero-greeting { left: 50%; }
+  .hero--expand .hero-greeting {
+    left: 50%;
+    font-size: clamp(2.2rem, 7vw, 5rem);
+  }
+  .hero--shrink .hero-greeting {
+    left: 50%;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  }
+  /* content/face: center in the flex column */
+  .hero--content .hero-greeting,
+  .hero--face    .hero-greeting {
+    text-align: center;
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {

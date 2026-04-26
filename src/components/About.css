@@ -174,8 +174,15 @@
     gap: 48px;
     margin-bottom: 64px;
   }
-  .about-anchor { position: static; }
-  .about-photo { max-width: 320px; }
+  .about-anchor {
+    position: static;
+    align-items: center;  /* center everything in left col on mobile */
+    text-align: center;
+  }
+  .about-anchor .section-label { justify-content: center; }
+  .about-photo { max-width: 320px; width: 100%; }
+  .about-info { align-items: center; }
+  .btn-resume { align-self: center; }
   .about-body { padding-top: 0; }
   .about-line { font-size: clamp(1.3rem, 4vw, 1.8rem); }
 }

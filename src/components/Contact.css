@@ -1,4 +1,4 @@
-/* contact section */
+/* contact */
 .contact {
   padding: 120px 0 0;
   position: relative;
@@ -6,104 +6,79 @@
   background-color: var(--bg);
 }
 
-/* vertical falling light lines */
+/* animated vertical lines */
 .contact-lines {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 100%;
-  margin: auto;
-  width: 90vw;
-  pointer-events: none;
-  z-index: 0;
+  top: 0; left: 0; right: 0; height: 100%;
+  margin: auto; width: 90vw;
+  pointer-events: none; z-index: 0;
 }
-
 .contact-line {
   position: absolute;
-  width: 1px;
-  height: 100%;
-  top: 0;
-  left: 50%;
+  width: 1px; height: 100%;
+  top: 0; left: 50%;
   background: rgba(156, 119, 92, 0.12);
   overflow: hidden;
 }
-[data-theme="dark"] .contact-line {
-  background: rgba(196, 168, 130, 0.09);
-}
+[data-theme="dark"] .contact-line { background: rgba(196, 168, 130, 0.08); }
 
 .contact-line::after {
   content: '';
   display: block;
   position: absolute;
-  height: 15vh;
-  width: 100%;
-  top: -50%;
-  left: 0;
+  height: 15vh; width: 100%;
+  top: -50%; left: 0;
   background: linear-gradient(to bottom,
-    rgba(156,119,92,0) 0%,
-    rgba(156,119,92,0.8) 75%,
-    rgba(156,119,92,1) 100%);
+    rgba(156,119,92,0) 0%, rgba(156,119,92,0.9) 75%, rgba(156,119,92,1) 100%);
   animation: line-drop 7s 0s infinite;
   animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
 }
 [data-theme="dark"] .contact-line::after {
   background: linear-gradient(to bottom,
-    rgba(196,168,130,0) 0%,
-    rgba(196,168,130,0.7) 75%,
-    rgba(196,168,130,1) 100%);
+    rgba(196,168,130,0) 0%, rgba(196,168,130,0.8) 75%, rgba(196,168,130,1) 100%);
 }
-
 @keyframes line-drop {
   0%   { top: -50%; }
   100% { top: 110%; }
 }
-
 .contact-line:nth-child(1) { margin-left: -25%; }
 .contact-line:nth-child(1)::after { animation-delay: 2s; }
-
-.contact-line:nth-child(2) { margin-left: 0; }
-
 .contact-line:nth-child(3) { margin-left: 25%; }
 .contact-line:nth-child(3)::after { animation-delay: 2.5s; }
 
-/* top text block */
+/* top text — centered */
 .contact-top {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--px);
-  margin-bottom: 48px;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 40px;
+  position: relative; z-index: 1;
+  text-align: center;   /* centered */
 }
+.contact-top .section-label { justify-content: center; }
 
 .contact-heading {
-  font-size: clamp(38px, 5.5vw, 72px);
+  font-size: clamp(36px, 5.5vw, 72px);
   line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--text);
-  margin-top: 14px;
-  margin-bottom: 14px;
+  margin-top: 14px; margin-bottom: 14px;
   overflow: hidden;
 }
 
-/* TOGETHER animation */
+/* TOGETHER */
 .together-wrap {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0;
-  color: var(--primary);
-  overflow: hidden;
-  line-height: 1.1;
+  display: inline-flex; align-items: baseline; gap: 0;
+  color: var(--primary); overflow: hidden; line-height: 1.1;
 }
 .toge, .ther {
   display: inline-block;
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  font-family: var(--font-display); letter-spacing: -0.02em;
   animation-fill-mode: forwards;
 }
 .toge { transform: translateX(-120%); opacity: 0; }
 .ther { transform: translateX(120%);  opacity: 0; }
-
 @keyframes slide-in-left {
   from { transform: translateX(-120%); opacity: 0; }
   to   { transform: translateX(0);     opacity: 1; }
@@ -112,119 +87,95 @@
   from { transform: translateX(120%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
 }
-.together-wrap.animate .toge {
-  animation: slide-in-left  0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-}
-.together-wrap.animate .ther {
-  animation: slide-in-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-}
+.together-wrap.animate .toge { animation: slide-in-left  0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+.together-wrap.animate .ther { animation: slide-in-right 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
 
 .contact-sub {
-  font-size: 1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+  font-size: 1rem; color: var(--text-muted); line-height: 1.6;
 }
 
 /* physics arena */
 .contact-arena {
   position: relative;
   width: 100%;
-  height: 340px;
+  height: 380px;
   overflow: hidden;
   z-index: 2;
 }
 
-/* pill base */
+/* pill base — BIGGER */
 .phys-pill {
   position: absolute;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  padding: 14px 28px;
+  align-items: center; justify-content: center;
+  padding: 22px 40px;
   border-radius: 100px;
   font-family: var(--font-display);
-  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   letter-spacing: 0.01em;
   white-space: nowrap;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.30),
+    inset 0 -2px 0 rgba(0,0,0,0.12);
   cursor: grab;
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
-  will-change: left, top;
+  will-change: left, top, transform;
+  transition: box-shadow 0.2s ease;
 }
 .phys-pill:active { cursor: grabbing; }
 .phys-pill:hover {
-  box-shadow: 0 10px 32px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow:
+    0 14px 36px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -2px 0 rgba(0,0,0,0.15);
 }
 
-/* icon circle pill */
+/* icon circle */
 .phys-pill--icon {
-  padding: 14px;
-  width: 56px;
-  height: 56px;
+  padding: 0;
+  width: 80px; height: 80px;
   border-radius: 50%;
+  font-size: 0;
 }
 
 /* snackbar */
 .snackbar {
   position: fixed;
-  bottom: 32px;
-  left: 50%;
+  bottom: 32px; left: 50%;
   transform: translateX(-50%) translateY(80px);
-  background: #c0392b;
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  padding: 12px 24px;
-  border-radius: 100px;
+  background: #c0392b; color: #fff;
+  font-family: var(--font-body); font-size: 0.9rem;
+  padding: 12px 28px; border-radius: 100px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  z-index: 2000;
-  opacity: 0;
+  z-index: 2000; opacity: 0;
   transition: transform 0.35s var(--ease), opacity 0.35s ease;
-  white-space: nowrap;
-  pointer-events: none;
+  white-space: nowrap; pointer-events: none;
 }
-.snackbar--show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
+.snackbar--show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 /* footer */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-  position: relative;
-  z-index: 1;
-}
+.footer { border-top: 1px solid var(--border); padding: 28px 0; position: relative; z-index: 1; }
 .footer-inner {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 var(--px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
+  max-width: var(--max-w); margin: 0 auto; padding: 0 var(--px);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
 }
-.footer-name {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  color: var(--text);
-  letter-spacing: 0.05em;
-}
+.footer-name { font-family: var(--font-display); font-size: 0.88rem; color: var(--text); letter-spacing: 0.05em; }
 .footer-copy { font-size: 0.78rem; color: var(--text-light); }
 .footer-built { font-size: 0.78rem; color: var(--primary); }
 
 /* responsive */
 @media (max-width: 860px) {
   .contact { padding: 96px 0 0; }
-  .contact-heading { font-size: clamp(32px, 7vw, 52px); }
-  .contact-arena { height: 420px; }
+  .contact-heading { font-size: clamp(30px, 7vw, 52px); }
+  .contact-arena { height: 440px; }
+  .phys-pill { padding: 18px 30px; font-size: 1rem; }
+  .phys-pill--icon { width: 68px; height: 68px; }
 }
 @media (max-width: 480px) {
-  .contact-heading { font-size: 30px; }
-  .contact-arena { height: 480px; }
-  .phys-pill { font-size: 0.88rem; padding: 12px 20px; }
-  .phys-pill--icon { width: 48px; height: 48px; padding: 12px; }
+  .contact-heading { font-size: 28px; }
+  .contact-arena { height: 500px; }
+  .phys-pill { padding: 16px 24px; font-size: 0.95rem; }
+  .phys-pill--icon { width: 58px; height: 58px; }
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
