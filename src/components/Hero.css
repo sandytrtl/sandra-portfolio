@@ -1,4 +1,3 @@
-/* grid bg animation */
 @keyframes bg-scrolling {
   0%   { background-position: 50px 50px; }
   100% { background-position: 0 0; }
@@ -82,13 +81,8 @@
 }
 
 /* shrink — shrinks back small AND eases up to final resting spot */
-/* We target where the greeting ends up in the hero-layout so it
-   appears to glide directly into position */
 .hero--shrink .hero-greeting {
   position: fixed;
-  /* final position is roughly top: calc(50vh - hero_content_offset)
-     We approximate the final Y as top:20vh so it lands near where
-     the static greeting will be after content phase */
   top: 20vh;
   left: 50%;
   transform: translate(-50%, 0);

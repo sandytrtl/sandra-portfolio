@@ -11,7 +11,7 @@ const projects = [
     year: '2026',
     color: '#9C775C',
     bgAccent: 'rgba(156,119,92,0.05)',
-    images: ['/images/Web1.svg', '/images/Web2.svg', '/images/Web3.svg'],
+    images: ['/images/web1.svg', '/images/web2.svg', '/images/web3.svg'],
     github: '#',
     liveUrl: 'https://pawlar-website.onrender.com/',
     clickable: true,
