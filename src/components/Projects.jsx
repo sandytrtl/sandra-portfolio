@@ -13,6 +13,7 @@ const projects = [
     bgAccent: 'rgba(156,119,92,0.05)',
     images: ['/images/web1.svg', '/images/web2.svg', '/images/web3.svg'],
     github: 'https://github.com/sandytrtl/Pawlar-Website',
+    liveUrl: 'https://pawlar-website.onrender.com/',
     clickable: true,
   },
   {
