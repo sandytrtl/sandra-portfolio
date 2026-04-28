@@ -37,6 +37,17 @@ export default function Hero() {
     };
   }, []);
 
+  /* lock scroll during intro so user can't skip it by scrolling */
+  useEffect(() => {
+    const introPhases = ['greet', 'expand', 'shrink', 'content'];
+    if (introPhases.includes(phase)) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [phase]);
+
   /* intro — only runs while hero section is visible.
      If the user scrolls away, clear all timers and skip to done. */
   useEffect(() => {
@@ -45,10 +56,10 @@ export default function Hero() {
     const start = () => {
       timers.current.forEach(clearTimeout);
       timers.current = [
-        setTimeout(() => setPhase('expand'),  2000),
-        setTimeout(() => setPhase('shrink'),  5000),
-        setTimeout(() => setPhase('content'), 7000),
-        setTimeout(() => setPhase('face'),    7600),
+        setTimeout(() => setPhase('expand'),  1400), /* 1st small greeting  — how long it sits still before growing */
+        setTimeout(() => setPhase('shrink'),  4000), /* 2nd expand greeting — how long it stays large */
+        setTimeout(() => setPhase('content'), 5800), /* 3rd shrink greeting — how long before content fades in */
+        setTimeout(() => setPhase('face'),    6400), /* 4th content         — delay before face slides in */
       ];
     };
 
@@ -77,6 +88,11 @@ export default function Hero() {
 
   return (
     <section id="hero" className={`hero hero--${phase}`}>
+      {/* pinned greeting — fixed, animates during shrink and stays through content + face */}
+      {(phase === 'greet' || phase === 'expand' || phase === 'shrink' || phase === 'content' || phase === 'face') && (
+        <span className="hero-greeting-pinned">Hello, I'm Sandra.</span>
+      )}
+
       <div className="hero-layout">
 
         <div className="hero-face">
@@ -90,6 +106,7 @@ export default function Hero() {
         </div>
 
         <div className="hero-text">
+          {/* in-flow greeting — visible in greet + expand phases only */}
           <p className="hero-greeting">Hello, I'm Sandra.</p>
 
           <h1 className="hero-headline">

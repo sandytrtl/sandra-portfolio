@@ -33,6 +33,8 @@
 .about-anchor {
   position: sticky;
   top: 96px;
+  /* align-self: start is required for sticky to work inside a grid/flex container */
+  align-self: start;
   display: flex;
   flex-direction: column;
   gap: 28px;
