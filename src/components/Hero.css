@@ -1,8 +1,10 @@
+/* bg animation */
 @keyframes bg-scrolling {
   0%   { background-position: 50px 50px; }
   100% { background-position: 0 0; }
 }
 
+/* hero wrapper */
 .hero {
   min-height: 100svh;
   display: flex;
@@ -20,7 +22,7 @@
 }
 [data-theme="dark"] .hero { --grid-line: rgba(196, 168, 130, 0.07); }
 
-/* layout */
+/* content layout */
 .hero-layout {
   max-width: var(--max-w);
   width: 100%;
@@ -33,14 +35,14 @@
   z-index: 1;
 }
 
-/* GREETING — 5-phase intro */
+/* greeting base */
 .hero-greeting {
   font-family: var(--font-body);
   letter-spacing: 0.01em;
   color: var(--text-muted);
 }
 
-/* greet — small, dead center, static */
+/* greet phase */
 .hero--greet .hero-greeting {
   position: fixed;
   top: 50%;
@@ -52,37 +54,29 @@
   margin: 0;
   white-space: nowrap;
   transition: none;
-  visibility: hidden; /* pinned handles this */
+  visibility: hidden;
 }
 
-/* in-flow greeting is never visible — pinned element handles all visual phases */
+/* always hidden */
 .hero-greeting { visibility: hidden; }
 
-/* expand — handled entirely by pinned element */
+/* expand hidden */
 .hero--expand .hero-greeting { visibility: hidden; }
 
-/* content / face — in-flow greeting is hidden; the pinned one takes its place */
+/* content/face hidden */
 .hero--content .hero-greeting,
-.hero--face    .hero-greeting {
-  display: none;
+.hero--face    .hero-greeting { display: none; }
+
+/* ─────────────────────────────────────────────
+   INLINE GREETING — mobile only, in document flow.
+   Sits between .hero-face and .hero-text naturally.
+   Hidden on desktop (pinned element handles it there).
+───────────────────────────────────────────── */
+.hero-greeting-inline {
+  display: none; /* desktop: hidden */
 }
 
-/* ─── PINNED GREETING ───────────────────────────────────────────────────────
-   Fixed element that handles the shrink → content → face transition.
-
-   The goal: land exactly above the .hero-headline in the hero layout.
-
-   Layout math (desktop, ≥ 861px):
-     - .hero-layout is centered with max-width var(--max-w), padding var(--px)
-     - Face is 230px wide, gap is 64px → text column starts at:
-         left-edge-of-layout + 230px + 64px = left-edge-of-layout + 294px
-     - left-edge-of-layout = (100vw - min(100vw, var(--max-w))) / 2 + var(--px)
-     - The greeting sits ~30px above the headline top (one line-height unit)
-     - hero-layout top padding is 120px, layout is vertically centered in 100svh
-       so approximate top = 50svh - (content-height/2) + 120px - 36px
-       We use calc(50% - 168px) on the section which maps to a fixed
-       top: calc(50svh - 168px) in fixed context — tuned to sit flush above headline
-─────────────────────────────────────────────────────────────────────────── */
+/* pinned element — desktop only */
 .hero-greeting-pinned {
   position: fixed;
   font-family: var(--font-body);
@@ -100,7 +94,7 @@
     opacity        0.5s  ease;
 }
 
-/* greet — pinned mirrors the in-flow greeting exactly so there's zero jump */
+/* greet pinned */
 .hero--greet .hero-greeting-pinned {
   opacity: 1;
   top: 50%;
@@ -111,10 +105,10 @@
   color: var(--text-muted);
   letter-spacing: 0.01em;
   pointer-events: none;
-  transition: none; /* no transition on mount */
+  transition: none;
 }
 
-/* expand — grows to display size, drifts up */
+/* expand pinned */
 .hero--expand .hero-greeting-pinned {
   opacity: 1;
   top: calc(50% - 80px);
@@ -127,11 +121,7 @@
   pointer-events: none;
 }
 
-/* shrink — animates from big center down to its resting spot.
-   Destination: same as content/face below but stays fixed during scroll.
-   top: 50svh - half-of-hero-content + 120px-padding - ~34px (one greeting line above headline)
-   ≈ calc(50svh - 162px)
-   left: layout-left-edge + face(230px) + gap(64px) = layout-left-edge + 294px             */
+/* shrink pinned */
 .hero--shrink .hero-greeting-pinned {
   opacity: 1;
   top: calc(50svh - 162px);
@@ -143,12 +133,23 @@
   letter-spacing: 0.01em;
 }
 
-/* content + face — switch to absolute so it scrolls with the section,
-   pinned exactly above the headline.
-   top: same arithmetic but in absolute coords within .hero (which is min-height 100svh
-   centered). The headline sits at padding-top(120px) + face-aligns-center.
-   Using top: calc(50% - 162px) mirrors the fixed calc(50svh - 162px) when
-   the section top is at scroll 0.                                              */
+/*
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  DESKTOP — "Hello, I'm Sandra." resting position                │
+  │                                                                 │
+  │  top:  calc(50% - 162px)                                        │
+  │    50% = vertical midpoint of .hero (min-height: 100svh)        │
+  │    -162px = pulls it above the headline.                        │
+  │    ↑ increase px to move it higher above the headline           │
+  │    ↓ decrease px (e.g. -120px) to move it lower / closer        │
+  │                                                                 │
+  │  left: calc(max((100% - var(--max-w,1200px)) / 2, 0px)          │
+  │              + var(--px, 24px) + 294px)                         │
+  │    Aligns to: left gutter + face width (230px) + gap (64px).    │
+  │    ↑ increase 294px to shift text further right                 │
+  │    ↓ decrease 294px to shift text further left                  │
+  └─────────────────────────────────────────────────────────────────┘
+*/
 .hero--content .hero-greeting-pinned,
 .hero--face    .hero-greeting-pinned {
   position: absolute;
@@ -163,7 +164,7 @@
   transition: none;
 }
 
-/* headline — slides up from below once content phase hits */
+/* headline reveal */
 .hero-headline {
   font-family: var(--font-display);
   font-size: clamp(32px, 4.2vw, 54px);
@@ -171,7 +172,6 @@
   color: var(--text);
   letter-spacing: -0.01em;
   margin-bottom: 40px;
-  /* reserve space so the greeting above it doesn't overlap */
   margin-top: 28px;
   opacity: 0;
   transform: translateY(36px);
@@ -180,9 +180,10 @@
 .hero--content .hero-headline,
 .hero--face    .hero-headline { opacity: 1; transform: translateY(0); }
 
+/* accent color */
 .highlight { color: var(--primary); display: inline; }
 
-/* ACTIONS */
+/* actions row */
 .hero-actions {
   display: flex;
   align-items: center;
@@ -195,7 +196,7 @@
 .hero--content .hero-actions,
 .hero--face    .hero-actions { opacity: 1; transform: translateY(0); }
 
-/* FACE */
+/* face column */
 .hero-face {
   flex-shrink: 0;
   width: 230px;
@@ -205,6 +206,7 @@
 }
 .hero--face .hero-face { opacity: 1; transform: translateX(0); }
 
+/* face container */
 .face-wrap {
   position: relative;
   width: 230px;
@@ -216,6 +218,7 @@
   50%       { transform: translateY(-10px); }
 }
 
+/* face svg */
 .face-base {
   width: 100%; height: 100%;
   user-select: none; -webkit-user-drag: none;
@@ -225,9 +228,10 @@
   filter: invert(1) hue-rotate(180deg) brightness(0.88);
 }
 
-/* eyes */
+/* eyes layer */
 .eyes-overlay { position: absolute; inset: 0; pointer-events: none; }
 
+/* eye socket */
 .eye-socket {
   position: absolute;
   width: 38px; height: 33px;
@@ -238,6 +242,7 @@
 .eye-socket:nth-child(1) { left: calc(30% - 19px); top: calc(32% - 16.5px); }
 .eye-socket:nth-child(2) { left: calc(63% - 19px); top: calc(30% - 16.5px); }
 
+/* pupil */
 .pupil {
   position: absolute;
   top: 50%; left: 50%;
@@ -257,7 +262,7 @@
   border-radius: 50%;
 }
 
-/* buttons */
+/* cta button */
 .btn-view-projects {
   display: inline-flex;
   align-items: center;
@@ -285,7 +290,10 @@
 .btn-view-projects span { position: relative; z-index: 1; }
 .btn-view-projects:hover { box-shadow: 0 6px 22px var(--shadow-md); transform: translateY(-1px); }
 
+/* social row */
 .social-circles { display: flex; align-items: center; gap: 10px; }
+
+/* social icon */
 .social-circle {
   width: 46px; height: 46px;
   border-radius: 50%; overflow: hidden; flex-shrink: 0;
@@ -295,6 +303,7 @@
 .social-circle:hover { transform: translateY(-3px) scale(1.07); box-shadow: 0 8px 20px var(--shadow-md); }
 [data-theme="dark"] .social-circle img { filter: brightness(0.82) contrast(1.1); }
 
+/* section divider */
 .hero-divider {
   position: absolute; bottom: 0; left: 0; right: 0;
   height: 1px; background: var(--border); z-index: 1;
@@ -302,50 +311,127 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 860px) {
+  /* stack layout */
   .hero-layout {
-    flex-direction: column; align-items: center;
-    text-align: center; gap: 36px;
-    padding-top: 110px; padding-bottom: 72px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+    padding-top: 110px;
+    padding-bottom: 72px;
   }
-  .hero-face { order: -1; }
-  .hero-actions { justify-content: center; }
-  .hero-headline { font-size: clamp(28px, 6vw, 44px); margin-top: 22px; }
 
-  .hero--greet  .hero-greeting { left: 50%; }
-  .hero--expand .hero-greeting {
+  /* face first */
+  .hero-face {
+    order: -1;
+    margin-bottom: 20px;     /* ← space between face bottom and greeting */
+  }
+
+  /* center actions */
+  .hero-actions { justify-content: center; }
+
+  /* headline spacing — margin-top creates gap below the greeting */
+  .hero-headline {
+    font-size: clamp(28px, 6vw, 44px);
+    margin-top: 10px;        /* ← space between greeting and headline */
+  }
+
+  /* greet — centered */
+  .hero--greet .hero-greeting-pinned {
+    top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* expand — centered, bigger */
+  .hero--expand .hero-greeting-pinned {
+    top: calc(50% - 60px);
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: clamp(2.2rem, 7vw, 5rem);
   }
 
-  /* mobile — greeting centers above the headline text block */
+  /* shrink — animates down to center above content */
   .hero--shrink .hero-greeting-pinned {
     top: calc(50svh - 120px);
     left: 50%;
     transform: translateX(-50%);
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: 0.95rem;
   }
+
+  /* content/face — hide pinned, inline takes over */
   .hero--content .hero-greeting-pinned,
   .hero--face    .hero-greeting-pinned {
-    position: absolute;
-    /* on mobile layout: face is on top (order:-1), then greeting, then headline.
-       The hero-layout top padding is 110px. Face is ~180px + gap 36px = 326px.
-       Greeting sits ~28px above where the headline starts. */
-    top: calc(50% - 108px);
+    display: none;
+  }
+
+  /*
+    ┌──────────────────────────────────────────────────────────────────┐
+    │  MOBILE — "Hello, I'm Sandra." resting position                  │
+    │                                                                  │
+    │  This element lives in normal document flow — no positioning     │
+    │  math needed. It always renders between the face and headline.   │
+    │                                                                  │
+    │  Space ABOVE (face → greeting gap):                              │
+    │    → .hero-face { margin-bottom }  above  (currently 20px)       │
+    │                                                                  │
+    │  Space BELOW (greeting → headline gap):                          │
+    │    → .hero-headline { margin-top }  above  (currently 10px)      │
+    │                                                                  │
+    │  Shift LEFT / RIGHT:                                             │
+    │    → change text-align below (center / left / right)             │
+    │                                                                  │
+    │  Font size:                                                      │
+    │    → change font-size below (currently 0.95rem)                  │
+    └──────────────────────────────────────────────────────────────────┘
+  */
+  .hero-greeting-inline {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+  }
+
+  /* reveal with headline */
+  .hero--content .hero-greeting-inline,
+  .hero--face    .hero-greeting-inline {
+    opacity: 1;
+  }
+
+  /* greet center */
+  .hero--greet  .hero-greeting { left: 50%; }
+
+  /* expand size */
+  .hero--expand .hero-greeting {
     left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: clamp(2.2rem, 7vw, 5rem);
   }
 }
 
 @media (max-width: 480px) {
+  /* small face */
   .hero-face { width: 180px; }
   .face-wrap { width: 180px; height: 208px; }
+
+  /* small eyes */
   .eye-socket { width: 30px; height: 26px; }
   .eye-socket:nth-child(1) { left: calc(39% - 15px); top: calc(38% - 13px); }
   .eye-socket:nth-child(2) { left: calc(59% - 15px); top: calc(38% - 13px); }
   .pupil { width: 13px; height: 13px; }
+
+  /* small headline */
   .hero-headline { font-size: 28px; margin-bottom: 32px; }
+
+  /* expand size */
   .hero--expand .hero-greeting { font-size: clamp(1.8rem, 8vw, 3rem); }
+
+  /* small button */
   .btn-view-projects { padding: 12px 24px; font-size: 0.88rem; }
+
+  /* small social */
   .social-circle { width: 40px; height: 40px; }
 }

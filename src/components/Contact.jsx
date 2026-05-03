@@ -406,8 +406,8 @@ export default function Contact() {
       <footer className="footer">
         <div className="footer-inner">
           <span className="footer-name">Sandra Agustin</span>
-          <span className="footer-copy">© 2026 · Caloocan City, PH</span>
-          <span className="footer-built">Built with React + Vite ✦</span>
+          <span className="footer-copy">© 2026</span>
+          <span className="footer-built">Caloocan City, PH</span>
         </div>
       </footer>
     </section>

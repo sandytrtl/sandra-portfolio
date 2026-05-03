@@ -1,3 +1,4 @@
+/* Hero.jsx */
 import { useEffect, useRef, useState } from 'react';
 import './Hero.css';
 
@@ -5,10 +6,9 @@ export default function Hero() {
   const leftEyeRef  = useRef(null);
   const rightEyeRef = useRef(null);
   const timers      = useRef([]);
-  /* greet → expand → shrink → content → face */
   const [phase, setPhase] = useState('greet');
 
-  /* scroll to top on mount */
+  /* scroll to top */
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
@@ -37,48 +37,38 @@ export default function Hero() {
     };
   }, []);
 
-  /* lock scroll during intro so user can't skip it by scrolling */
+  /* lock scroll during intro */
   useEffect(() => {
     const introPhases = ['greet', 'expand', 'shrink', 'content'];
-    if (introPhases.includes(phase)) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = introPhases.includes(phase) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [phase]);
 
-  /* intro — only runs while hero section is visible.
-     If the user scrolls away, clear all timers and skip to done. */
+  /* intro sequence */
   useEffect(() => {
     const hero = document.getElementById('hero');
 
     const start = () => {
       timers.current.forEach(clearTimeout);
       timers.current = [
-        setTimeout(() => setPhase('expand'),  1400), /* 1st small greeting  — how long it sits still before growing */
-        setTimeout(() => setPhase('shrink'),  4000), /* 2nd expand greeting — how long it stays large */
-        setTimeout(() => setPhase('content'), 5800), /* 3rd shrink greeting — how long before content fades in */
-        setTimeout(() => setPhase('face'),    6400), /* 4th content         — delay before face slides in */
+        setTimeout(() => setPhase('expand'),  1400),
+        setTimeout(() => setPhase('shrink'),  4000),
+        setTimeout(() => setPhase('content'), 5800),
+        setTimeout(() => setPhase('face'),    6400),
       ];
     };
 
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
-        /* hero came into view — only restart if still in greet */
-        setPhase(p => {
-          if (p === 'greet') start();
-          return p;
-        });
+        setPhase(p => { if (p === 'greet') start(); return p; });
       } else {
-        /* hero left viewport — cancel pending timers, jump to done */
         timers.current.forEach(clearTimeout);
         setPhase('face');
       }
     }, { threshold: 0.1 });
 
     if (hero) obs.observe(hero);
-    start(); /* begin on mount */
+    start();
 
     return () => {
       timers.current.forEach(clearTimeout);
@@ -88,10 +78,9 @@ export default function Hero() {
 
   return (
     <section id="hero" className={`hero hero--${phase}`}>
-      {/* pinned greeting — fixed, animates during shrink and stays through content + face */}
-      {(phase === 'greet' || phase === 'expand' || phase === 'shrink' || phase === 'content' || phase === 'face') && (
-        <span className="hero-greeting-pinned">Hello, I'm Sandra.</span>
-      )}
+
+      {/* pinned greeting — used on desktop + during shrink animation on mobile */}
+      <span className="hero-greeting-pinned">Hello, I'm Sandra.</span>
 
       <div className="hero-layout">
 
@@ -105,8 +94,16 @@ export default function Hero() {
           </div>
         </div>
 
+        {/*
+          INLINE GREETING — only visible on mobile (≤860px).
+          Sits in normal document flow between the face and the text block,
+          so it is always naturally above the headline on any screen size.
+          CSS controls its visibility and fade-in timing.
+        */}
+        <p className="hero-greeting-inline" aria-hidden="true">Hello, I'm Sandra.</p>
+
         <div className="hero-text">
-          {/* in-flow greeting — visible in greet + expand phases only */}
+          {/* in-flow greeting — only visible in greet + expand phases */}
           <p className="hero-greeting">Hello, I'm Sandra.</p>
 
           <h1 className="hero-headline">
