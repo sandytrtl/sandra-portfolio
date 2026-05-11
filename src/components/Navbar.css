@@ -53,8 +53,9 @@
 .nav-links a:hover { color: var(--primary); }
 .nav-links a:hover::after { width: 100%; }
 
-/* active state — colour only */
+/* active state */
 .nav-links a.nav-active { color: var(--primary); }
+.nav-links a.nav-active::after { width: 100%; }
 
 /* right controls */
 .nav-right { display: flex; align-items: center; gap: 10px; }

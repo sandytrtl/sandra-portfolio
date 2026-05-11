@@ -63,34 +63,6 @@ const FLY_IN_HEIGHT   = 12;
 const FLY_IN_DURATION = 1.8;
 const FLY_IN_STAGGER  = 0.09;
 
-/* ─── CARD GEOMETRY & FACE DIRECTION ──────────────────────────────────────
-   BoxGeometry(CARD_W, CARD_D, CARD_H): X=width, Y=thickness, Z=height.
-   The card lies flat on the table. The face plane has rotation.x = -π/2
-   so it points straight UP (+Y) in the pivot's local space.
-
-   HOVER "card reveal" goal:
-     • Face points toward the camera (+Z world)
-     • Card is right-side up (+Y world = top of card)
-
-   APPROACH — quaternion in world space, converted to table-local space:
-     We build the exact world-space quaternion that achieves:
-       local +Y  →  world +Z  (face toward camera)
-       local +Z  →  world +Y  (top of card = up)
-       local +X  →  world +X  (left/right unchanged)
-     Then we express that as a LOCAL quaternion for the pivot by factoring
-     out the parent (tg) world rotation. This works regardless of how the
-     user has dragged/rotated the table.
-
-   The target world quaternion Q_world satisfies:
-       Q_world * (0,1,0) = (0,0,1)   ← face toward screen
-       Q_world * (0,0,1) = (0,1,0)   ← card top = world up
-   That is a -90° rotation around the world X axis:
-       Q_world = quaternionFromAxisAngle( X, -π/2 )
-
-   To get the pivot's LOCAL quaternion:
-       Q_local = inverse(Q_parent) * Q_world
-   where Q_parent = tg's current world quaternion.
-─────────────────────────────────────────────────────────────────────────── */
 
 function ThreeTable({ isDark, hoveredSkill }) {
   const mountRef = useRef(null);
