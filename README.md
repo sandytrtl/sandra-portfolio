@@ -6,7 +6,7 @@ Hi! I'm Sandra, an aspiring UX/UI Designer and Front-end Developer based in the 
 
 ## About Me
 
-I sit at the intersection of design and code. I care about the details — from interaction patterns and visual hierarchy to clean, maintainable component architecture. 
+I sit at the intersection of design and code. I care about the details, from interaction patterns and visual hierarchy to clean, maintainable component architecture. 
 
 
 ## What's in This Portfolio
@@ -21,27 +21,9 @@ Section:
 ## Tech Stack
 
 - **React 18** + **Vite 5**
-- **Three.js** — 3D/WebGL visuals
-- **GSAP 3** — scroll-triggered animations
-- **CSS Variables** — light/dark theme support
-- **Google Fonts** — Dela Gothic One + Della Respira
-
-
-## Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
+- **Three.js** — 
+- **GSAP 3** 
+- **CSS Variables**
 
 ## Connect
 
