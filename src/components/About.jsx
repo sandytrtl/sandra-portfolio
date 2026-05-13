@@ -78,15 +78,15 @@ export default function About() {
         {/* right body column — big staggered text */}
         <div className="about-body" ref={bodyRef}>
           <p className="about-line stagger-line">
-            A Computer Science student passionate about the intersection of design and development.
-          </p>
+          Good enough has never really been my thing.  I take 'it's giving' very seriously as a design principle.       </p>
+          <p className="about-line stagger-line"> 
+          I'm drawn to the intersection of aesthetics and function — where a well-placed animation or a carefully chosen typeface can make someone feel something before they even read a word.        </p>
           <p className="about-line stagger-line">
-            I love creating things that look beautiful and work beautifully. Whether that's crafting UI in Figma or building interactive components, I bring attention to detail to every pixel.
-          </p>
+I'm not where I was six months ago, and that's the whole point. I'm always willing to learn, always seeking opportunities where I can grow and make real things people will love to use.          </p>
           <p className="about-line stagger-line">
-            I'm currently seeking an internship or OJT opportunity where I can grow, contribute, and make real things people love to use.
-          </p>
+If you've read this far, we're probably going to get along just fine. Whether it's a full project or just an idea you want to think through — my inbox is open. </p>
         </div>
+
 
       </div>
 
